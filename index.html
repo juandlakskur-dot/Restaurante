@@ -607,7 +607,52 @@
     display:none;
   }
          }
+
+    /* ===== HERO SLIDER ===== */
+.hero-swiper{
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, .10);
+  background: rgba(255,255,255,.92);
+}
+
+.hero-slide{
+  position: relative;
+  height: 270px;
+}
+
+.hero-slide img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.slide-badge{
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.90);
+  border: 1px solid rgba(15,23,42,.10);
+  font-weight: 900;
+  box-shadow: 0 10px 20px rgba(2,6,23,.10);
+}
+
+/* swiper dots */
+.hero-swiper .swiper-pagination-bullet{
+  width: 8px;
+  height: 8px;
+  opacity: .4;
+}
+.hero-swiper .swiper-pagination-bullet-active{
+  opacity: 1;
+}
   </style>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 
 <body>
@@ -619,16 +664,16 @@
       </a>
 
       <nav class="links">
-        <a href="#menu">Menú</a>
-        <a href="#about">Nosotros</a>
-        <a href="#contact">Ubicación</a>
-      </nav>
+  <a href="#about">Nosotros</a>
+  <a href="#menu">Productos</a>
+  <a href="#contact">Ubicación</a>
+</nav>
 
-      <div class="nav-actions">
-        <button class="btn ghost mobile-only" onclick="scrollToSection('menu')">Menú</button>
-        <button class="btn primary" onclick="openModal()">Pedir / Reservar</button>
-      </div>
-    </div>
+<div class="nav-actions">
+  <!-- Categorías ahora en el header -->
+  <button class="btn ghost mobile-only" onclick="openSidebar()">Categorías</button>
+  <button class="btn primary" onclick="openModal()">Pedir / Reservar</button>
+</div>
   </header>
 
   <main>
@@ -657,26 +702,62 @@
         </div>
 
         <div class="panel hero-card reveal">
-          <div class="hero-img">
-            <strong>🔥 Combo estrella: Burger + Papas + Soda</strong>
-          </div>
+  <div class="swiper hero-swiper">
+    <div class="swiper-wrapper">
 
-          <div class="stats">
-            <div class="stat">
-              <strong>4.7</strong>
-              <span>Reseñas</span>
-            </div>
-            <div class="stat">
-              <strong>8–12 min</strong>
-              <span>Preparación</span>
-            </div>
-            <div class="stat">
-              <strong>100%</strong>
-              <span>Fresco</span>
-            </div>
-          </div>
+      <!-- Slide 1 -->
+      <div class="swiper-slide">
+        <div class="hero-slide">
+          <img src="assets/slider/burger.jpg" alt="Burger Premium">
+          <div class="slide-badge">🍔 Burger Premium</div>
         </div>
       </div>
+
+      <!-- Slide 2 -->
+      <div class="swiper-slide">
+        <div class="hero-slide">
+          <img src="assets/slider/combos.jpg" alt="Combo Especial">
+          <div class="slide-badge">🔥 Combo Especial</div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="swiper-slide">
+        <div class="hero-slide">
+          <img src="assets/slider/papas.jpg" alt="Papas Crispy">
+          <div class="slide-badge">🍟 Papas Crispy</div>
+        </div>
+      </div>
+
+      <!-- Slide 4 -->
+      <div class="swiper-slide">
+        <div class="hero-slide">
+          <img src="assets/slider/milkshake.jpg" alt="Milkshake">
+          <div class="slide-badge">🍦 Milkshake</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Dots -->
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <strong>4.7</strong>
+      <span>Reseñas</span>
+    </div>
+    <div class="stat">
+      <strong>8–12 min</strong>
+      <span>Preparación</span>
+    </div>
+    <div class="stat">
+      <strong>100%</strong>
+      <span>Fresco</span>
+    </div>
+  </div>
+        </div>
     </section>
 
     <!-- MENU -->
@@ -684,7 +765,7 @@
   <div class="container">
     <div class="section-title reveal">
       <div>
-        <h2>Menú</h2>
+        <h2>Productos</h2>
         <p>Elige una categoría y mira los productos disponibles.</p>
       </div>
 
@@ -1106,7 +1187,18 @@ function closeSidebar(){
   sidebarDrawer.classList.remove("open");
   sidebarOverlay.classList.remove("open");
                           }
+
+    // ===== HERO SWIPER =====
+const heroSwiper = new Swiper(".hero-swiper", {
+  loop: true,
+  speed: 600,
+  spaceBetween: 12,
+  autoplay: { delay: 3200, disableOnInteraction: false },
+  pagination: { el: ".swiper-pagination", clickable: true },
+});
   
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>
