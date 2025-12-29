@@ -77,22 +77,30 @@
 
     /* Header */
     header{
-      position: sticky; top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-      background: rgba(255,255,255,.75);
-      border-bottom: 1px solid rgba(15, 23, 42, .10);
-    }
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 14px 0;
-      gap: 12px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:.7rem;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-    }
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,.82);
+  border-bottom: 1px solid rgba(15, 23, 42, .08);
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 12px 0;
+  gap: 12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-size: 1.05rem;
+}
     .logo{
   width: 40px;
   height: 40px;
@@ -138,17 +146,17 @@
       align-items: center;
     }
     h1{
-      font-size: clamp(2.1rem, 4vw, 3.2rem);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-top: 14px;
-    }
-    .lead{
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 58ch;
-    }
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.lead{
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 1.08rem;
+  max-width: 60ch;
+}
 
     .hero-cta{
       margin-top: 18px;
