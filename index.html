@@ -94,12 +94,15 @@
       letter-spacing: -0.02em;
     }
     .logo{
-      width: 40px; height: 40px; border-radius: 14px;
-      background:
-        radial-gradient(14px 14px at 30% 25%, rgba(255,255,255,.95), transparent 70%),
-        linear-gradient(135deg, rgba(37,99,235,1), rgba(245,158,11,.95));
-      box-shadow: 0 14px 26px rgba(2,6,23,.12);
-    }
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, .12);
+  box-shadow: 0 14px 26px rgba(2,6,23,.10);
+  padding: 6px; /* si tu logo necesita aire alrededor */
+}
     nav.links{
       display:flex; align-items:center; gap: 8px;
       flex-wrap: wrap;
