@@ -661,24 +661,24 @@
 
 <body>
   <header>
-    <div class="container nav">
-      <a class="brand" href="#">
-        <img class="logo" src="assets/burgers.png" alt="Logo FlashBite">
-        <span>DaniBurger</span>
-      </a>
+  <div class="container nav">
+    <a class="brand" href="#">
+      <img class="logo" src="assets/burgers.png" alt="Logo FlashBite">
+      <span>DaniBurger</span>
+    </a>
 
-      <nav class="links">
-  <a href="#about">Nosotros</a>
-  <a href="#menu">Productos</a>
-  <a href="#contact">Ubicación</a>
-</nav>
+    <nav class="links">
+      <a href="#about">Nosotros</a>
+      <a href="#menu">Productos</a>
+      <a href="#contact">Ubicación</a>
+    </nav>
 
-<div class="nav-actions">
-  <!-- Categorías ahora en el header -->
-  <button class="btn ghost mobile-only" onclick="openSidebar()">Categorías</button>
-  <button class="btn primary" onclick="openModal()">Pedir / Reservar</button>
-</div>
-  </header>
+    <div class="nav-actions">
+      <button class="btn ghost mobile-only" onclick="openSidebar()">Categorías</button>
+      <button class="btn primary" onclick="openModal()">Pedir / Reservar</button>
+    </div>
+  </div>
+</header>
 
   <main>
     <!-- HERO -->
@@ -1116,7 +1116,6 @@
       </form>
     </div>
   </div>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     // ====== Helpers UI ======
     const modal = document.getElementById("modal");
@@ -1212,13 +1211,20 @@ function closeSidebar(){
                           }
 
     // ===== HERO SWIPER =====
-const heroSwiper = new Swiper(".hero-swiper", {
-  loop: true,
-  speed: 600,
-  spaceBetween: 12,
-  autoplay: { delay: 3200, disableOnInteraction: false },
-  pagination: { el: ".swiper-pagination", clickable: true },
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+window.addEventListener("load", () => {
+  new Swiper(".hero-swiper", {
+    loop: true,
+    speed: 600,
+    spaceBetween: 12,
+    autoplay: { delay: 3200, disableOnInteraction: false },
+    pagination: { el: ".hero-swiper .swiper-pagination", clickable: true },
+    grabCursor: true,
+  });
 });
+</script>
   
   </script>
 
