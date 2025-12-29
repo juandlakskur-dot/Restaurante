@@ -615,6 +615,9 @@
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, .10);
   background: rgba(255,255,255,.92);
+  .hero-swiper{
+  touch-action: pan-y;
+  }
 }
 
 .hero-slide{
@@ -706,11 +709,9 @@
         </div>
 
         <div class="panel hero-card">
-  <div c<div class="panel hero-card">
   <div class="swiper hero-swiper">
     <div class="swiper-wrapper">
 
-      <!-- Slide 1 -->
       <div class="swiper-slide">
         <div class="hero-slide">
           <img src="assets/burger.png" alt="Burger Premium">
@@ -718,7 +719,6 @@
         </div>
       </div>
 
-      <!-- Slide 2 -->
       <div class="swiper-slide">
         <div class="hero-slide">
           <img src="assets/combos.png" alt="Combo Especial">
@@ -726,7 +726,6 @@
         </div>
       </div>
 
-      <!-- Slide 3 -->
       <div class="swiper-slide">
         <div class="hero-slide">
           <img src="assets/papas.png" alt="Papas Crispy">
@@ -734,7 +733,6 @@
         </div>
       </div>
 
-      <!-- Slide 4 -->
       <div class="swiper-slide">
         <div class="hero-slide">
           <img src="assets/milshake.png" alt="Milkshake">
@@ -744,7 +742,7 @@
 
     </div>
 
-    <!-- ✅ SOLO UNO, y SIEMPRE aquí afuera -->
+    <!-- Solo uno -->
     <div class="swiper-pagination"></div>
   </div>
 
@@ -762,25 +760,7 @@
       <span>Fresco</span>
     </div>
   </div>
-  </div>
-
-    </div>
-
-  <div class="stats">
-    <div class="stat">
-      <strong>4.7</strong>
-      <span>Reseñas</span>
-    </div>
-    <div class="stat">
-      <strong>8–12 min</strong>
-      <span>Preparación</span>
-    </div>
-    <div class="stat">
-      <strong>100%</strong>
-      <span>Fresco</span>
-    </div>
-  </div>
-        </div>
+</div>
     </section>
 
     <!-- MENU -->
@@ -1117,116 +1097,109 @@
     </div>
   </div>
   <script>
-    // ====== Helpers UI ======
-    const modal = document.getElementById("modal");
-    document.getElementById("year").textContent = new Date().getFullYear();
+  // ====== Helpers UI ======
+  const modal = document.getElementById("modal");
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-    function openModal(){ modal.classList.add("open"); }
-    function closeModal(){ modal.classList.remove("open"); }
-    modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+  function openModal(){ modal.classList.add("open"); }
+  function closeModal(){ modal.classList.remove("open"); }
+  modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
 
-    function scrollToSection(id){
-      document.getElementById(id).scrollIntoView({ behavior: "smooth" });
-    }
+  // ====== MENU FILTERING (Sidebar) ======
+  const desktopLinks = document.querySelectorAll("#menuSidebarDesktop .side-link");
+  const mobileLinks = document.querySelectorAll("#sidebarDrawer .side-link");
+  const items = document.querySelectorAll(".menu-item");
 
-    // ====== MENU FILTERING (Sidebar) ======
-const desktopLinks = document.querySelectorAll("#menuSidebarDesktop .side-link");
-const mobileLinks = document.querySelectorAll("#sidebarDrawer .side-link");
-const items = document.querySelectorAll(".menu-item");
+  function filterMenu(filter){
+    items.forEach(item => {
+      const category = item.dataset.category;
+      const show = (filter === "all" || category === filter);
+      item.classList.toggle("hidden", !show);
+    });
+  }
 
-function filterMenu(filter){
-  items.forEach(item => {
-    const category = item.dataset.category;
-    const show = (filter === "all" || category === filter);
-    item.classList.toggle("hidden", !show);
+  function setActiveLink(filter){
+    [...desktopLinks, ...mobileLinks].forEach(link => {
+      link.classList.toggle("active", link.dataset.filter === filter);
+    });
+  }
+
+  desktopLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      const filter = link.dataset.filter;
+      filterMenu(filter);
+      setActiveLink(filter);
+    });
   });
-}
 
-function setActiveLink(filter){
-  [...desktopLinks, ...mobileLinks].forEach(link => {
-    link.classList.toggle("active", link.dataset.filter === filter);
-  });
-}
-
-desktopLinks.forEach(link => {
-  link.addEventListener("click", () => {
-    const filter = link.dataset.filter;
+  function handleMobileCategoryClick(btn){
+    const filter = btn.dataset.filter;
     filterMenu(filter);
     setActiveLink(filter);
-  });
-});
+    closeSidebar();
+  }
 
-// Mobile drawer click
-function handleMobileCategoryClick(btn){
-  const filter = btn.dataset.filter;
-  filterMenu(filter);
-  setActiveLink(filter);
-  closeSidebar();
-}
+  // ====== Smooth animations (Scroll reveal) ======
+  const revealEls = document.querySelectorAll(".reveal");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
 
-    // ====== Smooth animations (Scroll reveal) ======
-    const revealEls = document.querySelectorAll(".reveal");
+  revealEls.forEach(el => observer.observe(el));
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if(entry.isIntersecting){
-          entry.target.classList.add("show");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
+  // ====== Order form handler (demo) ======
+  function handleOrder(e){
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const order = document.getElementById("order").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const notes = document.getElementById("notes").value.trim();
 
-    revealEls.forEach(el => observer.observe(el));
+    alert(
+      `✅ Pedido creado (demo)\n\nNombre: ${name}\nTel: ${phone}\nPedido: ${order}\nEntrega/Mesa: ${address}\nNotas: ${notes || "N/A"}`
+    );
 
-    // ====== Order form handler (demo) ======
-    function handleOrder(e){
-      e.preventDefault();
+    closeModal();
+    e.target.reset();
+  }
 
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const order = document.getElementById("order").value.trim();
-      const address = document.getElementById("address").value.trim();
-      const notes = document.getElementById("notes").value.trim();
+  // ====== SIDEBAR MOBILE DRAWER ======
+  const sidebarDrawer = document.getElementById("sidebarDrawer");
+  const sidebarOverlay = document.getElementById("sidebarOverlay");
 
-      alert(
-        `✅ Pedido creado (demo)\n\nNombre: ${name}\nTel: ${phone}\nPedido: ${order}\nEntrega/Mesa: ${address}\nNotas: ${notes || "N/A"}`
-      );
+  function openSidebar(){
+    sidebarDrawer.classList.add("open");
+    sidebarOverlay.classList.add("open");
+  }
 
-      closeModal();
-      e.target.reset();
-    }
+  function closeSidebar(){
+    sidebarDrawer.classList.remove("open");
+    sidebarOverlay.classList.remove("open");
+  }
+</script>
 
-// ====== SIDEBAR MOBILE DRAWER ======
-const sidebarDrawer = document.getElementById("sidebarDrawer");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
-
-function openSidebar(){
-  sidebarDrawer.classList.add("open");
-  sidebarOverlay.classList.add("open");
-}
-
-function closeSidebar(){
-  sidebarDrawer.classList.remove("open");
-  sidebarOverlay.classList.remove("open");
-                          }
-
-    // ===== HERO SWIPER =====
+<!-- ✅ 1) Cargar Swiper como script normal -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+<!-- ✅ 2) Inicializar Swiper -->
 <script>
-window.addEventListener("load", () => {
-  new Swiper(".hero-swiper", {
-    loop: true,
-    speed: 600,
-    spaceBetween: 12,
-    autoplay: { delay: 3200, disableOnInteraction: false },
-    pagination: { el: ".hero-swiper .swiper-pagination", clickable: true },
-    grabCursor: true,
+  window.addEventListener("load", () => {
+    new Swiper(".hero-swiper", {
+      loop: true,
+      speed: 600,
+      spaceBetween: 12,
+      autoplay: { delay: 3200, disableOnInteraction: false },
+      pagination: { el: ".hero-swiper .swiper-pagination", clickable: true },
+      grabCursor: true,
+    });
   });
-});
 </script>
-  
-  </script>
 
 </body>
 </html>
