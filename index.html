@@ -538,27 +538,47 @@
 
     <!-- MENU -->
     <section id="menu">
-      <div class="container">
-        <div class="section-title reveal">
-          <div>
-            <h2>Menú</h2>
-            <p>Filtra por categoría. Estructura lista para conectarla a tu inventario real.</p>
+  <div class="container">
+    <div class="section-title reveal">
+      <div>
+        <h2>Menú</h2>
+        <p>Elige una categoría y mira los productos disponibles.</p>
+      </div>
 
-            <div class="filters" role="tablist" aria-label="Filtros del menú">
-              <button class="chip active" data-filter="all">Todo</button>
-              <button class="chip" data-filter="burgers">Burgers</button>
-              <button class="chip" data-filter="combos">Combos</button>
-              <button class="chip" data-filter="drinks">Bebidas</button>
-              <button class="chip" data-filter="desserts">Postres</button>
-            </div>
-          </div>
+      <div class="menu-actions">
+        <button class="btn ghost mobile-only" onclick="openSidebar()">Categorías</button>
+        <button class="btn" onclick="openModal()">Ordenar</button>
+      </div>
+    </div>
 
-          <button class="btn" onclick="openModal()">Ordenar</button>
-        </div>
+    <div class="menu-layout">
+      <!-- Sidebar Desktop -->
+      <aside class="menu-sidebar reveal" id="menuSidebarDesktop">
+        <h3 class="sidebar-title">Categorías</h3>
 
+        <button class="side-link active" data-filter="all">
+          <span>🍽️</span> Todo
+        </button>
+        <button class="side-link" data-filter="burgers">
+          <span>🍔</span> Burgers
+        </button>
+        <button class="side-link" data-filter="combos">
+          <span>🔥</span> Combos
+        </button>
+        <button class="side-link" data-filter="drinks">
+          <span>🥤</span> Bebidas
+        </button>
+        <button class="side-link" data-filter="desserts">
+          <span>🍦</span> Postres
+        </button>
+      </aside>
+
+      <!-- Menu Grid -->
+      <div class="menu-content">
         <div class="grid" id="menuGrid">
           <!-- Burgers -->
           <article class="card menu-item reveal" data-category="burgers">
+            <div class="item-icon">🍔</div>
             <h3>Burger Clásica</h3>
             <p>Carne 120g, queso, lechuga, tomate y salsa Flash.</p>
             <div class="meta">
@@ -568,6 +588,7 @@
           </article>
 
           <article class="card menu-item reveal" data-category="burgers">
+            <div class="item-icon">🍔</div>
             <h3>Burger Doble</h3>
             <p>Doble carne, doble queso, pepinillos y salsa especial.</p>
             <div class="meta">
@@ -577,6 +598,7 @@
           </article>
 
           <article class="card menu-item reveal" data-category="burgers">
+            <div class="item-icon">🍗</div>
             <h3>Chicken Crunch</h3>
             <p>Pechuga crispy, coleslaw y mayonesa cítrica.</p>
             <div class="meta">
@@ -587,6 +609,7 @@
 
           <!-- Combos -->
           <article class="card menu-item reveal" data-category="combos">
+            <div class="item-icon">🔥</div>
             <h3>Combo Flash</h3>
             <p>Burger clásica + papas + soda (350ml).</p>
             <div class="meta">
@@ -596,6 +619,7 @@
           </article>
 
           <article class="card menu-item reveal" data-category="combos">
+            <div class="item-icon">🔥</div>
             <h3>Combo Doble</h3>
             <p>Burger doble + papas grandes + soda.</p>
             <div class="meta">
@@ -605,6 +629,7 @@
           </article>
 
           <article class="card menu-item reveal" data-category="combos">
+            <div class="item-icon">🔥</div>
             <h3>Combo Chicken</h3>
             <p>Chicken Crunch + papas + limonada.</p>
             <div class="meta">
@@ -615,6 +640,7 @@
 
           <!-- Drinks -->
           <article class="card menu-item reveal" data-category="drinks">
+            <div class="item-icon">🥤</div>
             <h3>Limonada natural</h3>
             <p>Clásica, fresca y sin exceso de azúcar.</p>
             <div class="meta">
@@ -624,6 +650,7 @@
           </article>
 
           <article class="card menu-item reveal" data-category="drinks">
+            <div class="item-icon">🥤</div>
             <h3>Soda artesanal</h3>
             <p>Maracuyá, frutos rojos o mango.</p>
             <div class="meta">
@@ -634,6 +661,7 @@
 
           <!-- Desserts -->
           <article class="card menu-item reveal" data-category="desserts">
+            <div class="item-icon">🍦</div>
             <h3>Brownie + Helado</h3>
             <p>Chocolate intenso con helado de vainilla.</p>
             <div class="meta">
@@ -643,6 +671,7 @@
           </article>
 
           <article class="card menu-item reveal" data-category="desserts">
+            <div class="item-icon">🍦</div>
             <h3>Milkshake</h3>
             <p>Vainilla, chocolate o cookies & cream.</p>
             <div class="meta">
@@ -652,8 +681,36 @@
           </article>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
 
+  <!-- Sidebar Mobile Drawer -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <aside class="sidebar-drawer" id="sidebarDrawer">
+    <div class="drawer-header">
+      <strong>Categorías</strong>
+      <button class="btn" onclick="closeSidebar()">Cerrar</button>
+    </div>
+
+    <button class="side-link active" data-filter="all" onclick="handleMobileCategoryClick(this)">
+      <span>🍽️</span> Todo
+    </button>
+    <button class="side-link" data-filter="burgers" onclick="handleMobileCategoryClick(this)">
+      <span>🍔</span> Burgers
+    </button>
+    <button class="side-link" data-filter="combos" onclick="handleMobileCategoryClick(this)">
+      <span>🔥</span> Combos
+    </button>
+    <button class="side-link" data-filter="drinks" onclick="handleMobileCategoryClick(this)">
+      <span>🥤</span> Bebidas
+    </button>
+    <button class="side-link" data-filter="desserts" onclick="handleMobileCategoryClick(this)">
+      <span>🍦</span> Postres
+    </button>
+  </aside>
+    </section>
+    
     <!-- ABOUT -->
     <section id="about">
       <div class="container">
