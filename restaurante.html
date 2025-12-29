@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DaniBurger | Comida Rápida</title>
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --bg-soft:#f7f7fb;
+      --text:#0f172a;
+      --muted:#64748b;
+      --card:#ffffff;
+      --border: rgba(15, 23, 42, .12);
+      --shadow: 0 18px 40px rgba(2, 6, 23, .08);
+      --accent:#2563eb;   /* azul */
+      --accent2:#f59e0b;  /* amarillo */
+      --radius: 18px;
+      --max: 1120px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(900px 380px at 10% 0%, rgba(37, 99, 235, .10), transparent 60%),
+        radial-gradient(900px 380px at 95% 10%, rgba(245, 158, 11, .10), transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+    }
+
+    a{ color: inherit; text-decoration:none; }
+    .container{ max-width: var(--max); margin:0 auto; padding: 0 18px; }
+
+    /* Buttons */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:.6rem;
+      border-radius: 999px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.85);
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(2, 6, 23, .08);
+      border-color: rgba(15, 23, 42, .20);
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(37,99,235,1), rgba(37,99,235,.85));
+      border-color: rgba(37,99,235,.35);
+      color: #fff;
+    }
+    .btn.primary:hover{ box-shadow: 0 14px 25px rgba(37,99,235,.25); }
+    .btn.ghost{
+      background: transparent;
+    }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.65);
+      color: var(--muted);
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    /* Header */
+    header{
+      position: sticky; top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.75);
+      border-bottom: 1px solid rgba(15, 23, 42, .10);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 0;
+      gap: 12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:.7rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+    .logo{
+      width: 40px; height: 40px; border-radius: 14px;
+      background:
+        radial-gradient(14px 14px at 30% 25%, rgba(255,255,255,.95), transparent 70%),
+        linear-gradient(135deg, rgba(37,99,235,1), rgba(245,158,11,.95));
+      box-shadow: 0 14px 26px rgba(2,6,23,.12);
+    }
+    nav.links{
+      display:flex; align-items:center; gap: 8px;
+      flex-wrap: wrap;
+    }
+    nav.links a{
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-weight: 700;
+      transition: background .15s ease, color .15s ease;
+    }
+    nav.links a:hover{
+      background: rgba(2, 6, 23, .05);
+      color: var(--text);
+    }
+    .nav-actions{
+      display:flex; align-items:center; gap: 10px;
+    }
+    .mobile-only{ display:none; }
+    @media (max-width: 900px){
+      nav.links{ display:none; }
+      .mobile-only{ display:inline-flex; }
+    }
+
+    /* Hero */
+    .hero{
+      padding: 58px 0 26px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items: center;
+    }
+    h1{
+      font-size: clamp(2.1rem, 4vw, 3.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-top: 14px;
+    }
+    .lead{
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 58ch;
+    }
+
+    .hero-cta{
+      margin-top: 18px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .mini-row{
+      margin-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: .95rem;
+    }
+
+    /* Hero card */
+    .panel{
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(15, 23, 42, .10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card{
+      padding: 16px;
+    }
+    .hero-img{
+      height: 270px;
+      border-radius: 14px;
+      border: 1px solid rgba(15, 23, 42, .10);
+      background:
+        radial-gradient(220px 140px at 20% 30%, rgba(245,158,11,.22), transparent 60%),
+        radial-gradient(240px 140px at 75% 70%, rgba(37,99,235,.18), transparent 60%),
+        linear-gradient(135deg, rgba(2,6,23,.02), rgba(2,6,23,.01));
+      position: relative;
+      overflow:hidden;
+      display:flex; align-items:flex-end;
+      padding: 16px;
+    }
+    .hero-img::after{
+      content:"";
+      position:absolute;
+      inset:-60px;
+      background: radial-gradient(260px 160px at 70% 35%, rgba(37,99,235,.18), transparent 60%);
+      transform: rotate(-12deg);
+    }
+    .hero-img strong{
+      position: relative;
+      z-index: 2;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(15,23,42,.10);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: .95rem;
+    }
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .stat{
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.10);
+      background: rgba(2,6,23,.02);
+      text-align:center;
+    }
+    .stat strong{ display:block; font-size: 1.05rem; }
+    .stat span{ color: var(--muted); font-size: .9rem; font-weight: 700; }
+
+    @media (max-width: 900px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .hero{ padding-top: 38px; }
+    }
+
+    /* Sections */
+    section{ padding: 34px 0; }
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .section-title h2{
+      font-size: 1.75rem;
+      letter-spacing: -0.02em;
+    }
+    .section-title p{
+      color: var(--muted);
+      max-width: 70ch;
+      font-weight: 600;
+    }
+
+    /* Filter chips */
+    .filters{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .chip{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(255,255,255,.8);
+      font-weight: 800;
+      color: var(--muted);
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+      user-select: none;
+    }
+    .chip:hover{ transform: translateY(-1px); border-color: rgba(15,23,42,.20); }
+    .chip.active{
+      background: rgba(37,99,235,.10);
+      color: rgba(37,99,235,1);
+      border-color: rgba(37,99,235,.25);
+    }
+
+    /* Cards grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 960px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 620px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 10px 25px rgba(2, 6, 23, .06);
+      transition: transform .15s ease, box-shadow .15s ease;
+      position: relative;
+      overflow:hidden;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 18px 35px rgba(2,6,23,.10);
+    }
+    .card h3{
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+    .card p{
+      margin-top: 6px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .95rem;
+    }
+    .meta{
+      margin-top: 12px;
+      display:flex; justify-content:space-between; align-items:center;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(15,23,42,.15);
+      font-weight: 900;
+    }
+    .badge{
+      font-size: .82rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(245,158,11,.30);
+      background: rgba(245,158,11,.14);
+      color: rgba(161, 98, 7, 1);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .badge.blue{
+      border-color: rgba(37,99,235,.30);
+      background: rgba(37,99,235,.12);
+      color: rgba(29,78,216,1);
+    }
+
+    /* About / Features */
+    .two-col{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    @media (max-width: 900px){
+      .two-col{ grid-template-columns: 1fr; }
+    }
+    .box{
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.90);
+      box-shadow: 0 10px 25px rgba(2,6,23,.06);
+    }
+    .box h3{ font-size: 1.12rem; }
+    .box ul{ margin-top: 10px; padding-left: 18px; color: var(--muted); font-weight: 700; }
+    .box li{ margin: 8px 0; }
+    .feature-row{
+      display:flex; gap: 10px; flex-wrap:wrap;
+      margin-top: 14px;
+    }
+
+    /* Map */
+    .map-wrap{
+      overflow:hidden;
+      border-radius: 16px;
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: 0 12px 30px rgba(2,6,23,.08);
+      background: rgba(255,255,255,.9);
+    }
+    iframe{ width: 100%; height: 320px; border:0; }
+
+    /* Footer */
+    footer{
+      margin-top: 24px;
+      padding: 26px 0;
+      border-top: 1px solid rgba(15,23,42,.10);
+      color: var(--muted);
+      background: rgba(2,6,23,.01);
+    }
+    .footer-grid{
+      display:flex; justify-content:space-between; align-items:center;
+      gap: 14px; flex-wrap: wrap;
+    }
+    .small-links{ display:flex; gap: 14px; flex-wrap: wrap; }
+    .small-links a{ font-weight: 800; }
+    .small-links a:hover{ color: var(--text); }
+
+    /* Modal */
+    .modal{
+      position: fixed; inset: 0;
+      display:none;
+      align-items:center; justify-content:center;
+      padding: 18px;
+      background: rgba(2,6,23,.45);
+      backdrop-filter: blur(8px);
+      z-index: 999;
+    }
+    .modal.open{ display:flex; }
+    .modal-content{
+      width: min(540px, 100%);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 30px 70px rgba(2,6,23,.20);
+      padding: 18px;
+    }
+    .modal-content h3{ font-size: 1.25rem; }
+    .modal-content p{ margin-top: 6px; color: var(--muted); font-weight: 650; }
+    form{ margin-top: 14px; display:grid; gap: 10px; }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 520px){ .row{ grid-template-columns: 1fr; } }
+
+    input, textarea{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.16);
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease;
+      font-weight: 700;
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(37,99,235,.40);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+    textarea{ min-height: 90px; resize: vertical; }
+
+    /* Scroll reveal animation */
+    .reveal{
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.show{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Card filtering animation */
+    .menu-item{
+      transition: transform .25s ease, opacity .25s ease;
+    }
+    .menu-item.hidden{
+      opacity: 0;
+      transform: scale(.98);
+      pointer-events: none;
+      position: absolute;
+      left:-9999px;
+      top: -9999px;
+    }
+
+    /* Floating WhatsApp */
+    .float-whatsapp{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#">
+        <img class="logo" src="logo/burgers.png" alt="Logo FlashBite">
+        <span>DaniBurger</span>
+      </a>
+
+      <nav class="links">
+        <a href="#menu">Menú</a>
+        <a href="#about">Nosotros</a>
+        <a href="#contact">Ubicación</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn ghost mobile-only" onclick="scrollToSection('menu')">Menú</button>
+        <button class="btn primary" onclick="openModal()">Pedir / Reservar</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <span class="pill">⚡ Comida rápida • Fresca • Lista en minutos</span>
+          <h1>Rápido, limpio y delicioso.</h1>
+          <p class="lead">
+            Hamburguesas, combos y papas crujientes. Un diseño minimalista para un negocio que se mueve rápido.
+            Menú filtrable, animaciones suaves y Google Maps real.
+          </p>
+
+          <div class="hero-cta">
+            <button class="btn primary" onclick="openModal()">Ordenar ahora</button>
+            <a class="btn" href="#menu">Ver menú</a>
+            <a class="btn ghost" href="#contact">Cómo llegar</a>
+          </div>
+
+          <div class="mini-row">
+            <span>✅ Entrega rápida</span>
+            <span>✅ Pagos digitales</span>
+            <span>✅ Para llevar</span>
+          </div>
+        </div>
+
+        <div class="panel hero-card reveal">
+          <div class="hero-img">
+            <strong>🔥 Combo estrella: Burger + Papas + Soda</strong>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>4.7</strong>
+              <span>Reseñas</span>
+            </div>
+            <div class="stat">
+              <strong>8–12 min</strong>
+              <span>Preparación</span>
+            </div>
+            <div class="stat">
+              <strong>100%</strong>
+              <span>Fresco</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu">
+      <div class="container">
+        <div class="section-title reveal">
+          <div>
+            <h2>Menú</h2>
+            <p>Filtra por categoría. Estructura lista para conectarla a tu inventario real.</p>
+
+            <div class="filters" role="tablist" aria-label="Filtros del menú">
+              <button class="chip active" data-filter="all">Todo</button>
+              <button class="chip" data-filter="burgers">Burgers</button>
+              <button class="chip" data-filter="combos">Combos</button>
+              <button class="chip" data-filter="drinks">Bebidas</button>
+              <button class="chip" data-filter="desserts">Postres</button>
+            </div>
+          </div>
+
+          <button class="btn" onclick="openModal()">Ordenar</button>
+        </div>
+
+        <div class="grid" id="menuGrid">
+          <!-- Burgers -->
+          <article class="card menu-item reveal" data-category="burgers">
+            <h3>Burger Clásica</h3>
+            <p>Carne 120g, queso, lechuga, tomate y salsa Flash.</p>
+            <div class="meta">
+              <span>$22.000</span>
+              <span class="badge blue">Burger</span>
+            </div>
+          </article>
+
+          <article class="card menu-item reveal" data-category="burgers">
+            <h3>Burger Doble</h3>
+            <p>Doble carne, doble queso, pepinillos y salsa especial.</p>
+            <div class="meta">
+              <span>$29.000</span>
+              <span class="badge blue">Best</span>
+            </div>
+          </article>
+
+          <article class="card menu-item reveal" data-category="burgers">
+            <h3>Chicken Crunch</h3>
+            <p>Pechuga crispy, coleslaw y mayonesa cítrica.</p>
+            <div class="meta">
+              <span>$24.000</span>
+              <span class="badge blue">Crispy</span>
+            </div>
+          </article>
+
+          <!-- Combos -->
+          <article class="card menu-item reveal" data-category="combos">
+            <h3>Combo Flash</h3>
+            <p>Burger clásica + papas + soda (350ml).</p>
+            <div class="meta">
+              <span>$33.000</span>
+              <span class="badge">Combo</span>
+            </div>
+          </article>
+
+          <article class="card menu-item reveal" data-category="combos">
+            <h3>Combo Doble</h3>
+            <p>Burger doble + papas grandes + soda.</p>
+            <div class="meta">
+              <span>$41.000</span>
+              <span class="badge">Top</span>
+            </div>
+          </article>
+
+          <article class="card menu-item reveal" data-category="combos">
+            <h3>Combo Chicken</h3>
+            <p>Chicken Crunch + papas + limonada.</p>
+            <div class="meta">
+              <span>$36.000</span>
+              <span class="badge">Combo</span>
+            </div>
+          </article>
+
+          <!-- Drinks -->
+          <article class="card menu-item reveal" data-category="drinks">
+            <h3>Limonada natural</h3>
+            <p>Clásica, fresca y sin exceso de azúcar.</p>
+            <div class="meta">
+              <span>$8.000</span>
+              <span class="badge blue">Drink</span>
+            </div>
+          </article>
+
+          <article class="card menu-item reveal" data-category="drinks">
+            <h3>Soda artesanal</h3>
+            <p>Maracuyá, frutos rojos o mango.</p>
+            <div class="meta">
+              <span>$10.000</span>
+              <span class="badge blue">Drink</span>
+            </div>
+          </article>
+
+          <!-- Desserts -->
+          <article class="card menu-item reveal" data-category="desserts">
+            <h3>Brownie + Helado</h3>
+            <p>Chocolate intenso con helado de vainilla.</p>
+            <div class="meta">
+              <span>$14.000</span>
+              <span class="badge">Sweet</span>
+            </div>
+          </article>
+
+          <article class="card menu-item reveal" data-category="desserts">
+            <h3>Milkshake</h3>
+            <p>Vainilla, chocolate o cookies & cream.</p>
+            <div class="meta">
+              <span>$16.000</span>
+              <span class="badge">Sweet</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="section-title reveal">
+          <div>
+            <h2>Lo que hacemos</h2>
+            <p>Comida rápida bien hecha: ingredientes frescos, procesos simples y calidad constante.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="box reveal">
+            <h3>🔥 Calidad sin complicaciones</h3>
+            <ul>
+              <li>Producción rápida y consistente.</li>
+              <li>Menú corto con alto rendimiento.</li>
+              <li>Packaging ideal para delivery.</li>
+              <li>Opciones para combos y upsell.</li>
+            </ul>
+
+            <div class="feature-row">
+              <span class="pill">🍔 Burgers</span>
+              <span class="pill">🍟 Papas</span>
+              <span class="pill">🥤 Bebidas</span>
+              <span class="pill">🍦 Postres</span>
+            </div>
+          </div>
+
+          <div class="box reveal">
+            <h3>🚀 Perfecto para conversiones</h3>
+            <p style="margin-top:10px; color:var(--muted); font-weight:700;">
+              La landing está pensada para que el usuario llegue, vea el menú y haga clic en “Ordenar” sin fricción.
+            </p>
+
+            <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+   <button class="btn primary" onclick="openModal()">Ordenar ahora</button>
+              <a class="btn" href="#contact">Ubicación</a>
+            </div>
+
+            <p style="margin-top:14px; color:var(--muted); font-weight:700;">
+              Tip: conecta el botón a WhatsApp, un checkout, o un agregador tipo Rappi/UberEats.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / MAP -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-title reveal">
+          <div>
+            <h2>Ubicación y horarios</h2>
+            <p>Mapa real con un iframe. Puedes cambiarlo por la dirección exacta del negocio.</p>
+          </div>
+          <a class="btn" href="tel:+573138806967">Llamar</a>
+        </div>
+
+        <div class="two-col">
+          <div class="box reveal">
+            <h3>📍 FlashBite (Ejemplo)</h3>
+            <p style="margin-top:10px; color:var(--muted); font-weight:700;">
+              Carrera 43A #1-50, El Poblado, Medellín, Colombia
+            </p>
+
+            <h3 style="margin-top:16px;">⏰ Horarios</h3>
+            <p style="margin-top:10px; color:var(--muted); font-weight:700;">
+              Lun–Jue: 12:00–22:00<br />
+              Vie–Sáb: 12:00–00:00<br />
+              Dom: 12:00–20:00
+            </p>
+
+            <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn" href="https://wa.link/1q7mt1" target="_blank" rel="noopener">WhatsApp</a>
+              <button class="btn primary" onclick="openModal()">Ordenar</button>
+              <a class="btn ghost" href="#menu">Ver menú</a>
+            </div>
+          </div>
+
+          <div class="map-wrap reveal" aria-label="Mapa de ubicación">
+            <!-- Google Maps REAL: Cambia el src por tu ubicación -->
+            <iframe
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.209399217248!2d-75.5669177!3d6.208745!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e4429ef4b6ef5b1%3A0x8b2f50c095f6c2aa!2sEl%20Poblado%2C%20Medell%C3%ADn%2C%20Antioquia!5e0!3m2!1ses!2sco!4v1735490000000">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section>
+      <div class="container">
+        <div class="panel reveal" style="padding: 22px; text-align:center;">
+          <h2 style="font-size: 1.7rem; letter-spacing:-0.02em;">¿Listo para pedir?</h2>
+          <p style="margin-top: 10px; color:var(--muted); font-weight:700; max-width:70ch; margin-left:auto; margin-right:auto;">
+            Haz tu orden en segundos. También puedes adaptar esta landing para delivery, dark kitchen o punto físico.
+          </p>
+          <div style="margin-top:16px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+            <button class="btn primary" onclick="openModal()">Ordenar ahora</button>
+            <a class="btn" href="#menu">Ver menú</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating WhatsApp -->
+  <div class="float-whatsapp">
+    <a class="btn primary" href="https://wa.link/1q7mt1" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="brand" style="gap:.6rem;">
+        <span class="logo" style="width:32px;height:32px;border-radius:12px;"></span>
+        <span>FlashBite</span>
+      </div>
+
+      <div class="small-links">
+        <a href="#menu">Menú</a>
+        <a href="#about">Nosotros</a>
+        <a href="#contact">Ubicación</a>
+      </div>
+
+      <div>© <span id="year"></span> FlashBite. Demo Landing.</div>
+    </div>
+  </footer>
+
+  <!-- MODAL PEDIDO -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap: 10px;">
+        <h3>Ordenar / Reservar</h3>
+        <button class="btn" onclick="closeModal()">Cerrar</button>
+      </div>
+      
+    <p>
+        Formulario demo. Puedes conectarlo a WhatsApp, Stripe, un backend o un POS.
+      </p>
+
+      <form onsubmit="handleOrder(event)">
+        <div class="row">
+          <input required type="text" id="name" placeholder="Nombre" />
+          <input required type="tel" id="phone" placeholder="Teléfono" />
+        </div>
+
+        <div class="row">
+          <input required type="text" id="order" placeholder="Qué vas a pedir (ej: Combo Flash x1)" />
+          <input required type="text" id="address" placeholder="Dirección / Mesa (si aplica)" />
+        </div>
+
+        <textarea id="notes" placeholder="Notas (opcional) — sin cebolla, extra salsa, etc."></textarea>
+        <button class="btn primary" type="submit">Confirmar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ====== Helpers UI ======
+    const modal = document.getElementById("modal");
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function openModal(){ modal.classList.add("open"); }
+    function closeModal(){ modal.classList.remove("open"); }
+    modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+
+    function scrollToSection(id){
+      document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+    }
+
+    // ====== Menu filtering ======
+    const chips = document.querySelectorAll(".chip");
+    const items = document.querySelectorAll(".menu-item");
+
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        const filter = chip.dataset.filter;
+
+        chips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+
+        items.forEach(item => {
+          const category = item.dataset.category;
+          const show = (filter === "all" || category === filter);
+
+          item.classList.toggle("hidden", !show);
+        });
+      });
+    });
+
+    // ====== Smooth animations (Scroll reveal) ======
+    const revealEls = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    // ====== Order form handler (demo) ======
+    function handleOrder(e){
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const order = document.getElementById("order").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const notes = document.getElementById("notes").value.trim();
+
+      alert(
+        `✅ Pedido creado (demo)\n\nNombre: ${name}\nTel: ${phone}\nPedido: ${order}\nEntrega/Mesa: ${address}\nNotas: ${notes || "N/A"}`
+      );
+
+      closeModal();
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>
